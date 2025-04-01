@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import './spotCard.css';
 
 
@@ -11,7 +11,7 @@ const SpotCard = ({spot}) => {
             <div className='info-container'>
                 <div className='top-container'>
                     <span>{`${spot.city}, ${spot.state}`}</span>
-                    <span>{`:star: ${spot.avgRating}`}</span>
+                    <span>{`⭐ ${spot.avgRating}`}</span>
                 </div>
                 <div className='middle-container'></div>
                 <p className='spot-text'>{spot.name}</p>

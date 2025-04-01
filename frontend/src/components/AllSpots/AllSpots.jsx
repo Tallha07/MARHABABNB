@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
-// import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 import { getAllSpotsThunk } from "../../store/spots";
 import SpotCard from "./SpotsCard";
 import { useNavigate } from "react-router-dom";
-// import { getAllSpotsThunk } from "../../store/spots";
 //  import "./AllSpot.css";
 
 
@@ -49,7 +48,7 @@ const AllSpots = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate()
-const spots = useSelector((state) => state.spots);
+const spots = useSelector((state) => state.spots.allSpots);
     const [isloaded, setIsLoaded] = useState(false);
 
 useEffect(() => {
@@ -64,7 +63,7 @@ setIsLoaded(true);
         getSpots();
     }
 
-}, [isloaded])
+}, [dispatch, isloaded])
 
 const goToSpotDetail = (e, spot) => {
     e.preventDefault();

@@ -6,6 +6,7 @@ import { csrfFetch } from './csrf';
 
 const SET_USER = "session/setUser";
 const REMOVE_USER = "session/removeUser";
+const SIGNUP_ERROR = "session/signupError"
 // action creators
 const setUser = (user) => {
     return {
@@ -19,6 +20,14 @@ const removeUser = () => {
         type: REMOVE_USER
     };
 };
+
+
+const signupError = (e) => {
+  return {
+    type: SIGNUP_ERROR,
+    payload: e
+  };
+}
 //thunks
 export const login = (user) => async (dispatch) => {
     const { credential, password } = user;
@@ -41,7 +50,8 @@ export const restoreUser = () => async (dispatch) => {
     return response;
   };
   export const signup = (user) => async (dispatch) => {
-    const { username, firstName, lastName, email, password } = user;
+    try {
+      const { username, firstName, lastName, email, password } = user;
     const response = await csrfFetch("/api/users", {
       method: "POST",
       body: JSON.stringify({
@@ -55,8 +65,11 @@ export const restoreUser = () => async (dispatch) => {
     const data = await response.json();
     dispatch(setUser(data.user));
     return response;
+  } catch (e) {
+    dispatch(signupError(e.message || 'Signup failed'));
+    throw e;
+  }
   };
-
   export const logout = () => async (dispatch) => {
     const response = await csrfFetch('/api/session', {
       method: 'DELETE'

@@ -6,7 +6,7 @@ import * as sessionActions from './store/session';
 import AllSpots from './components/AllSpots';
 import LoginFormModal from './components/LoginFormModal';
 import SignupFormModal from './components/SignupFormModal/SignupFormModal';
-
+import SpotDetail from './components/SpotDetail/SpotDetail';
 
 
 

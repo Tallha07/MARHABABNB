@@ -81,7 +81,7 @@ export const getAllSpotsThunk = () => async (dispatch) => {
 
         }
     } catch (e) {
-
+return (e)
     }
 };
 
@@ -117,7 +117,7 @@ export const createASpotThunk = (payload) => async (dispatch) => {
         throw new Error('Failed to create a spot');
     } 
    } catch (e) {
-    next (e);
+    return (e)
    }
 
 };
@@ -132,13 +132,13 @@ export const updateASpotThunk = (spotId, payload) => async (dispatch) => {
     });
     if (res.ok) {
         const spot = await res.json();
-        dispatch(updateASpot(spot));
+        dispatch(updateASpot(spot.id));
         return spot;
     } else {
         throw new Error('Failed to update a spot');
     } 
    } catch (e) {
-    next (e);
+   return (e)
    }
 };
 
@@ -159,7 +159,7 @@ export const deleteASpotThunk = (spotId) => async (dispatch) => {
         throw new Error('Failed to delete a spot');
     } 
    } catch (e) {
-    next (e);
+   return (e)
    }
 
 };
@@ -189,13 +189,13 @@ const initialState = {
 
 
 const spotsReducer = (state = initialState, action) => {
-    let newState;
+    let newState, newByIdGetAllSpots = {};
     switch (action.type) {
         case ALL_SPOTS:
-        const spotsArr = action.payload.Spots;
+        // const spotsArr = action.payload.Spots;
             newState = { ...state }
-            newState.allSpots = spotsArr;
-            for(let spot of spotsArr) {
+            newState.allSpots = action.payload.Spots;
+            for(let spot of action.payload.Spots) {
                 newByIdGetAllSpots[spot.id] = spot;
 
             }
@@ -203,22 +203,38 @@ const spotsReducer = (state = initialState, action) => {
             return newState;
     
         case SPOT_DETAILS: {
-            return { ...state, [action.spot.id]: action.spot };
+            const spot = action.payload;
+            return {
+                 ...state, 
+                 cuurentSpot: spot,
+        }
         }
         case CREATE_A_SPOT: {
-            return { ...state, [action.spot.id]: action.spot };
+            const { spotId } = action.spot;
+            newState.spots[spotId] = {
+                ...newState.spots[spotId], ...action.spot
+            }
         }
+        return newState;
+
         case UPDATE_A_SPOT: {
-            return { ...state, [action.spot.id]: action.spot };
+        const { spotId } = action;
+        if(newState.spots[spotId]) {
+            newState.spots[spotId] = {
+                ...newState.spots[spotId],
+                ...spot, //should update the spot with new data
+            }
+        }
+        return newState;
         }
         case DEL_A_SPOT: {
-            const newState = { ...state };
-            delete newState[action.spotId];
-            return newState;
+            const { spotId } = action;
+            delete newState.spot[spotId];
+            return newState
         }
         default:
             return state;
-    }
+    
 };
-
+}
 export default spotsReducer;
