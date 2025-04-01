@@ -1,0 +1,26 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams, useNavigate } from "react-router-dom";
+import createASpot from "../CreateSpotForm";
+import { getASpotThunk } from "../../store/spots";
+
+
+const EditASpot = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { spotId } = useParams();
+    const spot = useSelector((state) => state.spots[spotId]);
+    useEffect(() => {
+        dispatch(getASpotThunk(spotId)).catch(() => navigate('/'));
+
+    }, [dispatch, navigate, spotId]);
+
+    if (!spot) {
+        return null;
+    }
+    return (
+        <createASpot formType="Update Spot" spot={spot}/>
+    )
+}
+
+export default EditASpot;

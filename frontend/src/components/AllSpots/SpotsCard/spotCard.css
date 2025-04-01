@@ -1,0 +1,13 @@
+/* .card-container{
+
+} */
+
+.spotImage-container{
+    margin: 5px;
+}
+
+.spotImage{
+    height: 12rem;
+    width: 12rem;
+    border-radius: 7px;
+}

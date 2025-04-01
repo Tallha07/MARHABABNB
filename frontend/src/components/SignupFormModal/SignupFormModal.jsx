@@ -14,37 +14,44 @@ function SignupFormModal() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
+  const disabled = username.length < 4 || password.length < 6;
+  const signupButton = disabled ? "login-button-on" : "login-button-off";
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (password === confirmPassword) {
-      setErrors({});
-      return dispatch(
-        sessionActions.signup({
+      try {
+        const user = {
           email,
           username,
           firstName,
           lastName,
-          password
-        })
-      )
-        .then(closeModal)
-        .catch(async (res) => {
-          const data = await res.json();
-          if (data?.errors) {
-            setErrors(data.errors);
-          }
-        });
+          password,
+        };
+        const response = await dispatch(sessionActions.signup(user));
+        if (!response.ok) {
+          let errorMessage = new Error("A user with that email already exists");
+          errorMessage.status = 404;
+          throw errorMessage;
+        } else {
+          closeModal();
+        }
+
+      } catch (err) {
+        setErrors({ _error: "Username must be unique" });
+      }
+    } else {
+      setErrors({
+        confirmPassword: "Confirm Password field must be the same as the Password field"
+      });
     }
-    return setErrors({
-      confirmPassword: "Confirm Password field must be the same as the Password field"
-    });
   };
 
   return (
-    <>
+    <div className='signup-modal'>
       <h1>Sign Up</h1>
-      <form onSubmit={handleSubmit}>
+      {errors.email && <p>{errors.confirmPassword}</p>}
+      <form className="signup-form" onSubmit={handleSubmit}>
         <label>
           Email
           <input
@@ -107,9 +114,11 @@ function SignupFormModal() {
         {errors.confirmPassword && (
           <p>{errors.confirmPassword}</p>
         )}
-        <button type="submit">Sign Up</button>
+        <button id={signupButton} type="submit" disabled={disabled}>
+          Sign Up
+        </button>
       </form>
-    </>
+    </div>
   );
 }
 
