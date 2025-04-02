@@ -4,12 +4,12 @@ import { csrfFetch } from "./csrf";
 
 // constants
 
-const ALL_SPOTS = "spots/ALL_SPOTS";
-const SPOT_DETAILS = "spots/SPOT_DETAILS";
-const CREATE_A_SPOT = "spots/CREATE_SPOT";
-const UPDATE_A_SPOT = "spots/UPDATE_A_SPOT";
-const DEL_A_SPOT = "spots/DEL_A_SPOT";
-const ADD_IMAGES_TO_A_SPOT = "spots/ADD_IMAGES_TO_A_SPOT" ;
+const ALL_SPOTS = "spots/allSpots";
+const SPOT_DETAILS = "spots/spotDetails";
+const CREATE_A_SPOT = "spots/createASpot";
+const UPDATE_A_SPOT = "spots/updateASpot";
+const DEL_A_SPOT = "spots/delASpot";
+const ADD_IMAGES_TO_A_SPOT = "addImagesToASpot" ;
 
 //action creator to get all spots
 
@@ -73,11 +73,11 @@ export const getAllSpotsThunk = () => async (dispatch) => {
     try {
         const res = await csrfFetch("/api/spots/");
         if (res.ok) {
-            const spots = await res.json();
-            dispatch(getAllSpots(spots));
+            const data = await res.json();
+            dispatch(getAllSpots(data.spots));
             // return spots;
-        } else {
-            throw res
+        // } else {
+        //     throw res
 
         }
     } catch (e) {

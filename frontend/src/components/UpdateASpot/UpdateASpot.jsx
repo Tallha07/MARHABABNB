@@ -5,7 +5,7 @@ import CreateASpot from "../CreateSpotForm";
 import { getASpotThunk } from "../../store/spots";
 
 
-const GetASpot = () => {
+const UpdateASpot = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { spotId } = useParams();
@@ -23,4 +23,4 @@ const GetASpot = () => {
     )
 }
 
-export default GetASpot;
+export default UpdateASpot;
