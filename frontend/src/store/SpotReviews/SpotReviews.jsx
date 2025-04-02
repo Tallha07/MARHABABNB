@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getSpotReviewsThunk } from "../review";
+import DeleteAReviewModal from "../../components/DeleteAReview/DeleteAreview";
+import CreateReviewModal from "../CreateReviewModal/CreateAReview"
 import OpenModalButton from "../OpenModalButton";
 import "./SpotReviews.css"
 
@@ -52,7 +54,7 @@ function SpotReviews({ spot }) {
         <div className="reviews-container">
             <div className="spot-reviews-header">
                 {reviews.length > 0 ? (
-                   <span>{`⭐${spot.Rating.toFixed(1)}`} · {reviews.length}{" "}
+                   <span>{`⭐${spotRating.toFixed(1)}`} · {reviews.length}{" "}
                    {reviews.length === 1? "review" : "reviews"}
 
                    </span> 
@@ -66,12 +68,12 @@ function SpotReviews({ spot }) {
     <>
     <OpenModalButton 
     buttonText = {"Post Your Review"}
-    modalComponent={<createAReviewModal spot={spot} />}
+    modalComponent={<CreateReviewModal spot={spot} />}
     />
     </>
 )}
 <span>
-    {review.length > 0 ? (
+    {reviews.length > 0 ? (
         <div className="reviews">
             {reviews.map((review) => (
                 <div className="individual-reviews" key={review.id}>

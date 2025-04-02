@@ -8,29 +8,53 @@ import { addSpotImagesThunk, getASpotThunk } from "../../store/spots";
 
 
 const SpotDetail = () => {
-    const { id } = useParams();
-    const spot = useSelector((state) => state.spotsReducer.byId[id]);
+    const { spotId } = useParams();
+    const spotObj = useSelector((state) => state.spotsReducer.byId[spotId]);
     const dispatch = useDispatch();
-    const reviewsObj = useSelector((state) => state.reviews.byId[id])
+    const reviewsObj = useSelector((state) => state.reviews.byId[spotId])
     const reviews = Object.values(reviewsObj);
-    const [setErr] = useState({});
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [setError] = useState({});
+    const spot = spotObj[spotId];
     let previewImageUrl;
 
     useEffect(() => {
         const res = async () => {
             try {
-                await dispatch(getASpotThunk(spot));
-            } catch (e) {
-                const errorObj = {};
-                errorObj.Status = err.status;
-                errorObj.statusText = err.statusText;
+                await dispatch(getASpotThunk(spotId));
+            } catch (error) {
+                const errorObj = {
+               Status: error.status,
+                StatusText: error.statusText,
+            } 
+
                 setIsLoaded(true);
-                setErr(errorObj);
-            }
+                setError(errorObj);
+         }
         };
         res();
-    }, [dispatch, setErr, spot]);
+    }, [dispatch, spotId, setError]);
 
+
+const handleClick = (e) => {
+    e.preventDefault();
+    alert("Feature Coming Soon...");
+};
+if (isLoaded && !spot?.Owner)
+    return(
+<h1> 404 Does Not Exist </h1>
+);
+if (!spot?.Owner) return null;
+if (spotImages.length < 5) {
+    for (let i = spot.spotIamges.length; i < 5; i++) {
+        const img = {
+            id: i + 1,
+            url:
+            "https://www.ewingoutdoorsupply.com/media/catalog/product/placeholder/default/shutterstock_161251868.png",
+        }
+        spot.SpotImages.push(img);
+    }
+}
     previewImageUrl = addSpotImagesThunk.find((image) => image.preview === true);
     const indexOfPreview = addSpotImagesThunk.indexOf(previewImageUrl);
     const spotImages = [];
@@ -46,7 +70,7 @@ const SpotDetail = () => {
     }
     const price = parseFloat(spot.price);
     return (
-        <div ClassName="spot-detail">
+        <div className="spot-detail">
             <div className="spot-detail-header">
                 <span>
                     {spot.city}, {spot.state}, {spot.country}
@@ -58,10 +82,10 @@ const SpotDetail = () => {
                 )}
                 {spotImages.length > 0 && (
                     <>
-                        <img className="spot-image second-img" src={spotIamges[0].url} />
-                        <img className="spot-image third-img" src={spotIamges[1].url} />
-                        <img className="spot-image forth-img" src={spotIamges[2].url} />
-                        <img className="spot-image fifth-img" src={spotIamges[3].url} />
+                        <img className="spot-image second-img" src={spotImages[0].url} />
+                        <img className="spot-image third-img" src={spotImages[1].url} />
+                        <img className="spot-image forth-img" src={spotImages[2].url} />
+                        <img className="spot-image fifth-img" src={spotImages[3].url} />
 
                     </>
                 )}
@@ -69,7 +93,7 @@ const SpotDetail = () => {
             </div>
             <div className="spot-detail-info">
                 <div className="spot-owner-description">
-                    <h2>Hosted By {spot.Owner.firstName} {spot.Owner.lastName}
+                    <h2> Hosted By {spot.Owner.firstName} {spot.Owner.lastName}
                     </h2>
                 </div>
                 <div className="spot-booking-card">
@@ -83,9 +107,7 @@ const SpotDetail = () => {
                                 {reviews.length === 1 ? "reviews" : "reviews"}
                             </p>
                         ) : (
-                            <p>
-                                New
-                            </p>
+                            <p> New </p>
                         )}
 
                     </div>

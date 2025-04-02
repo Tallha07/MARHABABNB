@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
-import createASpot from "../CreateSpotForm";
+import CreateASpot from "../CreateSpotForm";
 import { getASpotThunk } from "../../store/spots";
 
 
-const EditASpot = () => {
+const GetASpot = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { spotId } = useParams();
@@ -19,8 +19,8 @@ const EditASpot = () => {
         return null;
     }
     return (
-        <createASpot formType="Update Spot" spot={spot}/>
+        <CreateASpot form="Update Spot" id={spot}/>
     )
 }
 
-export default EditASpot;
+export default GetASpot;

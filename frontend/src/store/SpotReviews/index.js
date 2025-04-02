@@ -1,2 +1,2 @@
 import SpotReviews from "./SpotReviews";
-export default SpotReviews,
+export default SpotReviews;
