@@ -1,54 +1,18 @@
-import { useEffect, useState } from "react";
 
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllSpotsThunk } from "../../store/spots";
 import SpotCard from "./SpotsCard";
 import { useNavigate } from "react-router-dom";
 //  import "./AllSpot.css";
 
-
-// function AllSpots() {
-// const [searchField, setSearchField] = useState('');
-// const dispatch = useDispatch();
-// const spotsObj = useSelector((state) => state.spots);
-// const spots = spotsObj ? Object.value(spotsObj) : [];
-
-// useEffect(() => {
-//     dispatch(getAllSpotsThunk());
-// }, [dispatch]);
-
-// const filteredSpots = useSelector((state) => {
-//     if (!state.spots) return [];
-    
-//     const searchTerm = searchField.toLowerCase();
-//     return Object.values(state.spots).filter((spot) => 
-//       spot.name.toLowerCase().includes(searchTerm)
-//     );
-//   });
-  
-// const onSearchChange = (event) => {
-//     setSearchField(event.targer.value);
-// };
-// if (!spot.length) {
-//     return null;
-// }
-// return (
-//     <div>
-//         <searchBox 
-//         className='Search-box'
-//         onChangeHandler={onSearchChange}
-//         placeholder='Search Spots...'
-//         />
-//     </div>
-// )
-// }
-
-
 const AllSpots = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate()
-const spots = useSelector((state) => state.spots.allSpots);
+const spotsObj = useSelector((state) => state.spots);
+const spots = spotsObj ? Object.values(spotsObj) : [];
+
     const [isloaded, setIsLoaded] = useState(false);
 
 useEffect(() => {

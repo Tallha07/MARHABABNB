@@ -15,8 +15,8 @@ const DeleteASpotModal = ({spot, onDeleteSuccess }) => {
             onDeleteSuccess();
             closeModal();
         } catch (error) {
-            next (e)
-        };
+          return error
+        }
             
     };
     return (

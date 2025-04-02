@@ -218,7 +218,7 @@ const spotsReducer = (state = initialState, action) => {
         return newState;
 
         case UPDATE_A_SPOT: {
-        const { spotId } = action;
+        const { spotId, spot } = action;
         if(newState.spots[spotId]) {
             newState.spots[spotId] = {
                 ...newState.spots[spotId],
@@ -235,6 +235,6 @@ const spotsReducer = (state = initialState, action) => {
         default:
             return state;
     
-};
+}
 }
 export default spotsReducer;
